@@ -1,40 +1,24 @@
-def split_before_uppercases(formula):
-    if not formula:
-        return []
-
-    parts = []
+def split_before_each_uppercases(formula):
     start = 0
-
-    for i in range(1, len(formula)):
-        if formula[i].isupper():
-            parts.append(formula[start:i])
-            start = i
-
-    parts.append(formula[start:])
-    return parts
-
-
-def split_at_digit(formula):
-    i = 0
-    # move i until we hit the first digit
-    while i < len(formula) and not formula[i].isdigit():
-        i += 1
-
-    if i == len(formula):
-        return formula, 1
-
-    name = formula[:i]
-    count = int(formula[i:])
-    return name, count
+    end = 1
+    elements_lst = []
+    
+    if not formula:
+        return elements_lst
+    
+    while end < len(formula):
+        if formula[end].isupper():
+            elements_lst.append(formula[start:end])
+            start = end
+        end += 1
+        
+    elements_lst.append(formula[start:])
+    
+    return elements_lst
 
 
-def count_atoms_in_molecule(molecular_formula):
-
-    atom_counts = {}
-
-    for atom in split_before_uppercases(molecular_formula):
-        atom_name, atom_count = split_at_digit(atom)
-
-        atom_counts[atom_name] = atom_counts.get(atom_name, 0) + atom_count
-
-    return atom_counts
+def split_at_first_digit(formula):
+    for char_index, char in enumerate(formula):
+        if char.isdigit():
+            return formula[:char_index], int(formula[char_index:])
+    return formula, 1
